@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Properties>
+        <Property name="PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} | %-5level | AppLog | %X{X-Correlation-ID} | JAVA | %thread | %logger{0} | %M | %msg %n</Property>
+    </Properties>
+    <CustomLevels>
+        <CustomLevel name="SENSITIVE" intLevel="460" />
+    </CustomLevels>
+    <Appenders>
+        <Console name="Console-Appender" target="SYSTEM_OUT" follow="true">
+            <PatternLayout>
+                <pattern>${PATTERN}</pattern>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="sensitive">
+            <AppenderRef ref="Console-Appender" level="SENSITIVE"/>
+        </Root>
+    </Loggers>
+</Configuration>

@@ -1,1 +1,29 @@
+server:
+  port: 8080
 
+spring:
+  application:
+    name: public-service-api
+  httpclient:
+    connection:
+      max-connection-per-route: 20
+      max-total-connection: 100
+      connection-time-out: 10000
+      read-time-out: 10000
+
+subscription-service:
+  access-key: "x-api-key"
+  access-value: "cb4532fc26b9421d88c5a079288bf51e"
+  correlation-id-key: "X-Correlation-ID"
+  host: "http://localhost:9090"
+  path:
+    subscription-list: "/v1/subscriptions?page=%s&size=%s"
+    subscription: "/v1/subscriptions/%s"
+    create-subscription: "/v1/subscriptions"
+    cancel-subscription: "/v1/subscriptions/%s"
+    info: "/info"
+    health: "/health"
+
+public-service:
+  x-api-key: "cb4532fc26b4921d88c5a079288bf51e"
+  correlation-id-key: "X-Correlation-ID"
