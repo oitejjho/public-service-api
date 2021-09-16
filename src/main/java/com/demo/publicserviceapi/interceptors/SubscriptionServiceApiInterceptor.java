@@ -32,9 +32,9 @@ public class SubscriptionServiceApiInterceptor implements ClientHttpRequestInter
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.set(subscriptionServiceConfig.getAccessKey(), subscriptionServiceConfig.getAccessValue());
         String correlationId = ThreadContext.get(publicServiceConfig.getCorrelationIdKey());
-        if (correlationId == null || correlationId.trim().isEmpty()) {
+        /*if (correlationId == null || correlationId.trim().isEmpty()) {
             correlationId = String.format("PSA-%s", UUID.randomUUID().toString().replace("-", "").toLowerCase());
-        }
+        }*/
         headers.add(subscriptionServiceConfig.getCorrelationIdKey(), correlationId);
         return execution.execute(request, body);
     }
