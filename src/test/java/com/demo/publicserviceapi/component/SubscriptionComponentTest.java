@@ -63,6 +63,8 @@ public class SubscriptionComponentTest {
 
         subscriptionCreateResponse = new SubscriptionCreateResponse();
         subscriptionCreateResponse.setSubscriptionId("subscriptionId");
+
+        createSubscriptionRequest = new CreateSubscriptionRequest();
     }
 
     @Test
