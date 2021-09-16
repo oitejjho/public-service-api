@@ -57,7 +57,7 @@ public class ExternalSubscriptionService {
         StringBuilder endpointBuilder = new StringBuilder().append(subscriptionServiceConfig.getHost()).append(subscriptionServiceConfig.getPath().getCancelSubscription());
         String endpoint = String.format(endpointBuilder.toString(), id, action);
         LOG.info("start cancelling subscription from subscription service endpoint {}", endpoint);
-        subscriptionServiceApiRestTemplate.postForEntity(endpoint, null, Object.class);
+        subscriptionServiceApiRestTemplate.put(endpoint, null, Object.class);
         LOG.info("done cancelling subscription from subscription service endpoint {}", endpoint);
     }
 

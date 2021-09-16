@@ -53,7 +53,7 @@ public class SubscriptionController {
         return new Response<>(new Status(SUCCESS), response);
     }
 
-    @PostMapping(path = "/subscriptions/{id}")
+    @PutMapping(path = "/subscriptions/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void cancelSubscription(
             @PathVariable String id,
