@@ -3,6 +3,8 @@ package com.demo.publicserviceapi.config;
 import com.demo.publicserviceapi.exceptions.InvalidRequestException;
 import com.demo.publicserviceapi.model.Response;
 import com.demo.publicserviceapi.model.Status;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -13,19 +15,25 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.NoSuchElementException;
 
+import static com.demo.publicserviceapi.constants.StatusConstants.HttpConstants.EXTERNAL_SERVICE_ERROR;
 import static com.demo.publicserviceapi.constants.StatusConstants.HttpConstants.NOT_FOUND;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 @ResponseBody
 public class ControllerErrorHandlingConfig extends ResponseEntityExceptionHandler {
+
+    private static final Logger LOG = LogManager.getLogger(ControllerErrorHandlingConfig.class);
 
     @ExceptionHandler(InvalidRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -40,9 +48,18 @@ public class ControllerErrorHandlingConfig extends ResponseEntityExceptionHandle
     }
 
     @ExceptionHandler(RestClientException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Response handleRestClientException(RestClientException ex) {
-        return new Response<>(new Status(NOT_FOUND), null);
+    public Response handleRestClientException(RestClientException ex, HttpServletResponse response) {
+        if (ex instanceof HttpClientErrorException httpClientErrorException) {
+            LOG.error("rest client exception happened status code : {}, response :{}", httpClientErrorException.getStatusCode(), httpClientErrorException.getResponseBodyAsString());
+            HttpStatus httpStatus = httpClientErrorException.getStatusCode();
+            response.setStatus(httpStatus.value());
+        }
+        else if(ex instanceof HttpServerErrorException httpServerErrorException) {
+            LOG.error("rest server exception happened status code : {}, response :{}", httpServerErrorException.getStatusCode(), httpServerErrorException.getResponseBodyAsString());
+            HttpStatus httpStatus = httpServerErrorException.getStatusCode();
+            response.setStatus(httpStatus.value());
+        }
+        return new Response<>(new Status(EXTERNAL_SERVICE_ERROR), null);
     }
 
     @Override

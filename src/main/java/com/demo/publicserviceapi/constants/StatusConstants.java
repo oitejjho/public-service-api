@@ -19,6 +19,8 @@ public class StatusConstants {
         ACTION_IS_REQUIRED("TEMP31306", "action is required"),
         ACTION_IS_INVALID("TEMP31307", "action is invalid"),
 
+
+        EXTERNAL_SERVICE_ERROR("TEMP31992", "external service error"),
         DUPLICATE_EMAIL_ERROR("TEMP31993", "email is duplicate"),
         METHOD_NOT_ALLOWED("TEMP31994", "Method not allowed"),
         JSON_DECODING_ERROR("TEMP31995", "JSON Decoding error"),

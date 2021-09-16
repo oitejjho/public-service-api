@@ -20,7 +20,7 @@ subscription-service:
     subscription-list: "/v1/subscriptions?page=%s&size=%s"
     subscription: "/v1/subscriptions/%s"
     create-subscription: "/v1/subscriptions"
-    cancel-subscription: "/v1/subscriptions/%s"
+    cancel-subscription: "/v1/subscriptions/%s?action=%s"
     info: "/info"
     health: "/health"
 

@@ -1,8 +1,10 @@
 package com.demo.publicserviceapi.component;
 
-import com.demo.publicserviceapi.model.Response;
-import com.demo.publicserviceapi.model.external.response.ExternalSubscriptionList;
+import com.demo.publicserviceapi.model.external.response.ExternalSubscriptionCreateResponse;
+import com.demo.publicserviceapi.model.external.response.ExternalSubscriptionResponse;
 import com.demo.publicserviceapi.model.external.response.ExternalSubscriptionsResponse;
+import com.demo.publicserviceapi.model.request.CreateSubscriptionRequest;
+import com.demo.publicserviceapi.model.response.SubscriptionCreateResponse;
 import com.demo.publicserviceapi.model.response.SubscriptionListResponse;
 import com.demo.publicserviceapi.model.response.SubscriptionResponse;
 import com.demo.publicserviceapi.service.external.ExternalSubscriptionService;
@@ -21,25 +23,6 @@ public class SubscriptionComponent {
     private final ExternalSubscriptionService externalSubscriptionService;
     private final ConversionService conversionService;
 
-    /*public SubscriptionCreateResponse createSubscription(CreateSubscriptionRequest request) {
-        SubscribedUserEntity entity = this.conversionService.convert(request, SubscribedUserEntity.class);
-
-        entity.setSubscriptionId(UUID.randomUUID().toString());
-        entity.setCreated(LocalDateTime.now());
-        entity.setActiveFlag(true);
-        SubscribedUserEntity persistedEntity = this.subscriptionPersistenceService.createSubscription(entity);
-
-        SubscriptionCreateResponse response = new SubscriptionCreateResponse();
-        response.setSubscriptionId(persistedEntity.getSubscriptionId());
-
-        SubscriptionCompleteEvent event = new SubscriptionCompleteEvent();
-        event.setEmail(entity.getEmail());
-        event.setBody("Successfully subscribed");
-        rabbitEventSender.send(event.getEmail());
-
-        return response;
-    }*/
-
     public SubscriptionListResponse getSubscriptions(int page, int size) {
         ExternalSubscriptionsResponse externalResponse = this.externalSubscriptionService.getSubscriptions(page, size);
         List<SubscriptionResponse> subscriptionListResponse = externalResponse.getData().getSubscriptions().stream().map(response -> this.conversionService.convert(response, SubscriptionResponse.class)).collect(Collectors.toList());
@@ -47,19 +30,21 @@ public class SubscriptionComponent {
         response.setSubscriptions(subscriptionListResponse);
         response.setCurrentPage(externalResponse.getData().getCurrentPage());
         response.setPageSize(externalResponse.getData().getPageSize());
-        response.setCurrentPage(externalResponse.getData().getCurrentPage());
+        response.setTotalPage(externalResponse.getData().getTotalPage());
         return response;
     }
 
-    /*public SubscriptionResponse getSubscription(String subscriptionId) {
-        SubscribedUserEntity subscribedUserEntity = this.subscriptionPersistenceService.getSubscription(subscriptionId);
-        SubscriptionResponse subscriptionResponse = this.conversionService.convert(subscribedUserEntity, SubscriptionResponse.class);
-        return subscriptionResponse;
+    public SubscriptionResponse getSubscription(String id) {
+        ExternalSubscriptionResponse externalResponse = this.externalSubscriptionService.getSubscription(id);
+        return this.conversionService.convert(externalResponse.getData(), SubscriptionResponse.class);
     }
 
-    public void cancelSubscription(String subscriptionId) {
-        SubscribedUserEntity subscribedUserEntity = this.subscriptionPersistenceService.getSubscription(subscriptionId);
-        subscribedUserEntity.setActiveFlag(false);
-        this.subscriptionPersistenceService.updateSubscription(subscribedUserEntity);
-    }*/
+    public SubscriptionCreateResponse createSubscription(CreateSubscriptionRequest request) {
+        ExternalSubscriptionCreateResponse externalResponse = this.externalSubscriptionService.createSubscription(request);
+        return this.conversionService.convert(externalResponse.getData(), SubscriptionCreateResponse.class);
+    }
+
+    public void cancelSubscription(String id, String action) {
+        this.externalSubscriptionService.cancelSubscription(id, action);
+    }
 }
