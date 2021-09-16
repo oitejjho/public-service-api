@@ -139,4 +139,28 @@ public class ExternalSubscriptionServiceTest {
 
     }
 
+    @Test
+    void testCancelSubscriptionSuccess() {
+
+        Mockito.doNothing().when(subscriptionServiceApiRestTemplate).put(Mockito.anyString(), Mockito.isNull(), Mockito.any(Object.class));
+
+        externalSubscriptionService.cancelSubscription("subscriptionId", "cancel");
+
+        Mockito.verify(subscriptionServiceApiRestTemplate, Mockito.times(1)).put(Mockito.anyString(), Mockito.isNull(), Mockito.any(Object.class));
+
+    }
+
+    @Test
+    void testCancelSubscriptionRestClientException() {
+
+        Mockito.doThrow(new RestClientException("rest client exception")).when(subscriptionServiceApiRestTemplate).put(Mockito.anyString(), Mockito.isNull(), Mockito.any(Object.class));
+
+        assertThrows(RestClientException.class, () -> {
+            externalSubscriptionService.cancelSubscription("subscriptionId", "cancel");
+        });
+
+        Mockito.verify(subscriptionServiceApiRestTemplate, Mockito.times(1)).put(Mockito.anyString(), Mockito.isNull(), Mockito.any(Object.class));
+
+    }
+
 }
