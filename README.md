@@ -72,12 +72,13 @@ After running the application you'll get the documentation in swagger-ui and ope
 
 
 ## Improvements
-
+* Reactive way of coding
 * Containerization
 * Metrics Expose
+* Integration with jaeger / slueth / opentelemetry for better visibility
 * Integration with metrics collector i.e. prometheus
 * Integration with ELK stack
 * Integration with grafana for better visibility, observability and alerts
 * 100% Unit test code coverage
 * Integration test
-* Automation testing i.e. RobotFramework, Selenium 
+* Automation testing or behavioral testing i.e. RobotFramework, Selenium 
