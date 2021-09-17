@@ -20,7 +20,7 @@
 ## Introduction
 
 This service is responsible for the communication between UI and subscription-service.
-[Architecture](https://app.diagrams.net/#G1XGGeUXccthocw9K2tq2LzusGMpywMcKN)
+* [Architecture](https://drive.google.com/file/d/1XGGeUXccthocw9K2tq2LzusGMpywMcKN/view?usp=sharing)
 
 ## Features
 * Microservice architecture
