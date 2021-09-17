@@ -21,6 +21,7 @@
 
 This service is responsible for the communication between UI and subscription-service.
 * [Architecture](https://drive.google.com/file/d/1XGGeUXccthocw9K2tq2LzusGMpywMcKN/view?usp=sharing)
+* ![Optional Text](https://drive.google.com/file/d/17tN4YFGOpSBZvHJUuLM-8RYl5jLFVoLj/view?usp=sharing)
 
 ## Features
 * Microservice architecture
