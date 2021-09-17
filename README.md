@@ -74,6 +74,7 @@ After running the application you'll get the documentation in swagger-ui and ope
 ## Improvements
 * Reactive way of coding
 * Containerization
+* Integration with CICD i.e. jenkins / rancher
 * Metrics Expose
 * Integration with jaeger / slueth / opentelemetry for better visibility
 * Integration with metrics collector i.e. prometheus
